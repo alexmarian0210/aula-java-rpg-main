@@ -13,9 +13,11 @@ public class Item {
     }
 
     public void usar(Heroi heroi) {
-        if(tipo.equals("cura")) {
-            heroi.usarPocao();
-            System.out.println(nome + " foi usado!");
+        System.out.println("\nUsando " + nome + "...");
+        if (tipo.equals("cura")) {
+            heroi.receberCura(valor);
+        } else if (tipo.equals("ataque")) {
+            heroi.aumentarAtaque(valor);
         }
     }
 
@@ -23,11 +25,7 @@ public class Item {
         return nome + " [" + tipo + " +" + valor + "]";
     }
 
-    public void exibirInfo() {
-        System.out.println( nome + " [" + tipo + " +" + valor + "]");
-    }
-
-    public String getNome() {return nome; }
+    public String getNome() { return nome; }
     public String getTipo() { return tipo; }
     public int getValor() { return valor; }
 }

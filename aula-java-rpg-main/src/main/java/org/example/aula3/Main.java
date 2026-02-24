@@ -2,8 +2,6 @@ package org.example.aula3;
 
 import java.util.Scanner;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
 
@@ -11,91 +9,100 @@ public class Main {
 
         exibirTitulo();
 
-        System.out.println("Digite o nome do herói:");
+        System.out.println(" Digite o nome do seu heroí: ️");
         String nomeHeroi = scanner.next();
 
-        Heroi heroi = new Heroi(nomeHeroi, 100, 35, 10);
+        Heroi heroi = new Heroi(nomeHeroi, 1000,35,5);
 
-        System.out.println(" Heroi criado com sucesso!");
+        // Adicionando itens ao inventário do herói
+        heroi.adicionarItem(new Item("Poção ", "cura", 20));
+        heroi.adicionarItem(new Item("Poção Grande", "cura", 50));
+        heroi.adicionarItem(new Item("Amuleto de Força", "ataque", 5));
+
+
+        System.out.println("\n Herói criado com sucesso!");
         heroi.exibirStatus();
 
         Monstro[] monstros = {
-                new Monstro("Goblin", 50, 15, 5, 20),
-                new Monstro("Orc", 39, 25, 10, 40),
-                new Monstro("Troll", 80, 30, 15, 60)
+                new Monstro("Goblin",  40,12,2,20),
+                new Monstro("Orc Guerreiro", 70,12,2,20),
+                new Monstro("Dragão Negro", 95,20,10,100),
+                //novos monstros
+                new Monstro("Golem", 120,30,15,500),
+                new Monstro("Deric", 200, 40,30,0)
         };
+
         int vitorias = 0;
 
         for(Monstro monstro: monstros) {
-            System.out.println("\n você avança pela masmorra...");
-            System.out.println(" um " + monstro.getNome() + " aparece!");
-            System.out.println(" Prepare-se para a batalha!");
-            System.out.println("\n [1] para lutar");
-            System.out.println(" [2] para fugir");
-            System.out.print("Escolha: ");
+            System.out.println("\n\n Você avança pela dungeon...");
+            System.out.println(" Um " + monstro.getNome() + " bloqueia o caminho!");
+            System.out.println("\n [1] Lutar");
+            System.out.println(" [2] Fugir (pula essa batalha)");
+            System.out.println(" Escolha: ");
 
             int opcao;
-            try{
+            try {
                 opcao = scanner.nextInt();
-            }catch (Exception e){
+            } catch (Exception e ){
                 opcao = 1;
                 scanner.nextLine();
             }
 
             if (opcao == 2) {
-                System.out.println(" Você fugiu da batalha!");
+                System.out.println("  Você fugiu para o proximo corredor...");
                 continue;
             }
 
             Batalha batalha = new Batalha(heroi, monstro, scanner);
-            boolean venceu = batalha.inicia();
+            boolean venceu = batalha.iniciar();
 
-            if(venceu) {
+            //recompensa por vencer a batalha
+            heroi.adicionarItem(new Item("Ouro do " + monstro.getNome(), "Cura", monstro.getXpRecompensa()));
+            heroi.ganharXp(monstro.getXpRecompensa());
+
+            if (venceu) {
                 vitorias++;
-                System.out.println("Precione [ENTER] para continuar...");
+                System.out.println("\n [Pressione ENTER para continuar]");
                 scanner.nextLine();
                 scanner.nextLine();
-            }else {
+            } else {
                 exibirGameOver(nomeHeroi, vitorias, heroi.getXp());
                 scanner.close();
-                break;
+                return;
             }
-       }
-        exibirVitorias(nomeHeroi, vitorias);
+
+        }
+
+        exibirVitoria(heroi, vitorias);
         scanner.close();
     }
 
     private static void exibirTitulo() {
-        System.out.println("--------------------------------");
-        System.out.println( "   BEM-VINDO AO RPG DE CONSOLE!   ");
-        System.out.println("     Prepare-se para a aventura!      ");
-        System.out.println("-------------------------------- ");
-
+        System.out.println("-------------------------------------------");
+        System.out.println("-          DUNGEON QUEST                -");
+        System.out.println("-  Programação Orientação a Objeto        -");
+        System.out.println("-------------------------------------------");
+        System.out.println();
     }
 
-    private static void exibirGameOver(String nomeHeroi, int vitorias, int xp) {
-        System.out.println("--------------------------------");
-        System.out.println("           GAME OVER!            ");
-        System.out.println("---------------------------------");
-        System.out.println("fim da jornada de " + nomeHeroi);
-        System.out.println("Vitorias: " + vitorias);
-        System.out.println("XP acumulada: " + xp);
+    private static void exibirGameOver(String nome, int vitorias, int xp) {
+        System.out.println("-------------------------------------------");
+        System.out.println("-             GAME OVER                 -");
+        System.out.println("-------------------------------------------");
+        System.out.println(" Fim da Jornada de " + nome);
+        System.out.println(" Vitórias: "+ vitorias);
+        System.out.println(" XP Total: " + xp);
+        System.out.println();
     }
 
-    private static void exibirVitorias(String nomeHeroi, int vitorias) {
-        System.out.println("--------------------------------");
-        System.out.println("     PARABÉNS, " + nomeHeroi.toUpperCase() + "!     ");
-        System.out.println("   Você venceu todos os monstros!   ");
-        System.out.println("Vitorias: " + vitorias);
-        System.out.println("--------------------------------");
+    private static void exibirVitoria(Heroi heroi, int vitorias) {
+        System.out.println("-----------------------------------------------");
+        System.out.println("-           DUNGEON COMPLETA!              -");
+        System.out.println("-----------------------------------------------");
+        System.out.println(" Parabéns, " + heroi.getNome() + "!");
+        System.out.println(" Vitórias: " + vitorias);
+        System.out.println(" XP Total: " + heroi.getXp());
+        heroi.exibirStatus();
     }
-
-
-
-    
-    
-
-       
-
-
 }
