@@ -16,8 +16,8 @@ public class Main {
 
         // Adicionando itens ao inventário do herói
         heroi.adicionarItem(new Item("Poção ", "cura", 20));
-        heroi.adicionarItem(new Item("Poção Grande", "cura", 50));
-        heroi.adicionarItem(new Item("Amuleto de Força", "ataque", 5));
+        heroi.adicionarItem(new Item("Careca do Deric ", "cura", 50));
+        heroi.adicionarItem(new Item("Relogio do Bem10 ", "ataque", 5));
 
 
         System.out.println("\n Herói criado com sucesso!");
